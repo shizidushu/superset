@@ -18,6 +18,8 @@ ENV GUNICORN_BIND=0.0.0.0:8088 \
 ENV GUNICORN_CMD_ARGS="--workers ${GUNICORN_WORKERS} --timeout ${GUNICORN_TIMEOUT} --bind ${GUNICORN_BIND} --limit-request-line ${GUNICORN_LIMIT_REQUEST_LINE} --limit-request-field_size ${GUNICORN_LIMIT_REQUEST_FIELD_SIZE}"
 
 # Create superset user & install dependencies
+# docker build was failing because of cryptography package failure wirl libssl-dev.
+# instead of libssl-dev it is not set to `libssl1.0-dev`
 RUN useradd -U -m superset && \
     mkdir /etc/superset  && \
     mkdir ${SUPERSET_HOME} && \
@@ -34,7 +36,7 @@ RUN useradd -U -m superset && \
         libldap2-dev \
         libpq-dev \
         libsasl2-dev \
-        libssl-dev && \
+        libssl1.0-dev && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/* && \
     curl https://raw.githubusercontent.com/${SUPERSET_REPO}/${SUPERSET_VERSION}/requirements.txt -o requirements.txt && \
