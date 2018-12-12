@@ -71,6 +71,6 @@ WORKDIR /home/superset
 
 # Deploy application
 EXPOSE 8088
-HEALTHCHECK CMD ["curl", "-f", "http://localhost:8088/health"]
+#HEALTHCHECK CMD ["curl", "-f", "http://localhost:8088/health"]
 CMD ["gunicorn", "superset:app"]
 USER superset
