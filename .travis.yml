@@ -1,4 +1,12 @@
-language: node_js
-before_script:
-- npm install -g dockerlint
-script: dockerlint
+sudo: true
+dist: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t superset .
+      - docker images
+      - docker tag superset $DOCKER_USERNAME/superset
+      - docker push $DOCKER_USERNAME/superset
