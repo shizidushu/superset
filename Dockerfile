@@ -27,11 +27,13 @@ RUN useradd -U -m superset && \
     chown -R superset:superset ${SUPERSET_HOME} && \
     apt-get update && \
     apt-get install -y \
+        apt-transport-https \
         build-essential \
         curl \
         default-libmysqlclient-dev \
         freetds-dev \
         freetds-bin \
+        unixodbc-dev \
         libffi-dev \
         libldap2-dev \
         libpq-dev \
@@ -40,8 +42,8 @@ RUN useradd -U -m superset && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/* && \
     curl https://raw.githubusercontent.com/${SUPERSET_REPO}/${SUPERSET_VERSION}/requirements.txt -o requirements.txt && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir \
+    pip3 install --no-cache-dir -r requirements.txt && \
+    pip3 install --no-cache-dir \
         Werkzeug==0.14.1 \
         flask-cors==3.0.3 \
         flask-mail==0.9.1 \
@@ -56,11 +58,24 @@ RUN useradd -U -m superset && \
         pyhive==0.5.1 \
         pyldap==2.4.28 \
         pymssql==2.1.3 \
+        pyodbc==4.0.24 \
         redis==2.10.5 \
         sqlalchemy-clickhouse==0.1.5.post0 \
         sqlalchemy-redshift==0.7.1 \
         superset==${SUPERSET_VERSION} && \
     rm requirements.txt
+    
+
+## install SQL Server drivers and tools
+### https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server    
+### https://github.com/Microsoft/mssql-docker/blob/master/linux/mssql-tools/Dockerfile
+
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+  && curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+  && apt-get update \
+  && ACCEPT_EULA=Y apt-get -y install msodbcsql17 \
+  && ACCEPT_EULA=Y apt-get -y install mssql-tools
+ENV PATH="/opt/mssql-tools/bin:${PATH}"
 
 # Configure Filesystem
 COPY superset /usr/local/bin
