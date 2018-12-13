@@ -53,6 +53,7 @@ RUN useradd -U -m superset && \
         impyla==0.14.0 \
         infi.clickhouse-orm==1.0.2 \
         mysqlclient==1.3.7 \
+        pandas==0.23.4 \
         psycopg2==2.6.1 \
         pyathena==1.2.5 \
         pyhive==0.5.1 \
