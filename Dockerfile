@@ -42,8 +42,8 @@ RUN useradd -U -m superset && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/* && \
     curl https://raw.githubusercontent.com/${SUPERSET_REPO}/${SUPERSET_VERSION}/requirements.txt -o requirements.txt && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir \
+    pip3 install --no-cache-dir -r requirements.txt && \
+    pip3 install --no-cache-dir \
         Werkzeug==0.14.1 \
         flask-cors==3.0.3 \
         flask-mail==0.9.1 \
