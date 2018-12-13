@@ -27,6 +27,7 @@ RUN useradd -U -m superset && \
     chown -R superset:superset ${SUPERSET_HOME} && \
     apt-get update && \
     apt-get install -y \
+        apt-transport-https \
         build-essential \
         curl \
         default-libmysqlclient-dev \
