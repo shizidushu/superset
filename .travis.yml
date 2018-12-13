@@ -8,5 +8,5 @@ jobs:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker build -t superset .
       - docker images
-      - docker tag superset $DOCKER_USERNAME/superset
-      - docker push $DOCKER_USERNAME/superset
+      - docker tag superset $DOCKER_USERNAME/superset:0.29.0rc7
+      - docker push $DOCKER_USERNAME/superset:0.29.0rc7
