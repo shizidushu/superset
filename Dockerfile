@@ -56,11 +56,24 @@ RUN useradd -U -m superset && \
         pyhive==0.5.1 \
         pyldap==2.4.28 \
         pymssql==2.1.4 \
+        pyodbc==4.0.24 \
         redis==2.10.5 \
         sqlalchemy-clickhouse==0.1.5.post0 \
         sqlalchemy-redshift==0.7.1 \
         superset==${SUPERSET_VERSION} && \
     rm requirements.txt
+    
+
+## install SQL Server drivers and tools
+### https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server    
+### https://github.com/Microsoft/mssql-docker/blob/master/linux/mssql-tools/Dockerfile
+
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+  && curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+  && apt-get update \
+  && ACCEPT_EULA=Y apt-get -y install msodbcsql17 \
+  && ACCEPT_EULA=Y apt-get -y install mssql-tools
+ENV PATH="/opt/mssql-tools/bin:${PATH}"
 
 # Configure Filesystem
 COPY superset /usr/local/bin
