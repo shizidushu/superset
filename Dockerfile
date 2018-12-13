@@ -32,6 +32,7 @@ RUN useradd -U -m superset && \
         default-libmysqlclient-dev \
         freetds-dev \
         freetds-bin \
+        unixodbc-dev \
         libffi-dev \
         libldap2-dev \
         libpq-dev \
